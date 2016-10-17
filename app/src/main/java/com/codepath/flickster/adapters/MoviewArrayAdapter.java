@@ -64,7 +64,7 @@ public class MoviewArrayAdapter extends ArrayAdapter<Movie> {
             tvTitle.setText(movie.getOriginalTitle());
             tvOverview.setText(movie.getOverview());
 
-            Picasso.with(getContext()).load(movie.getPosterPath()).into(ivImage);
+            Picasso.with(getContext()).load(movie.getBackdropPath()).into(ivImage);
         }
 
         // return the view

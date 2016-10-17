@@ -18,11 +18,16 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+
 public class MovieActivity extends AppCompatActivity {
 
     ArrayList<Movie> movies;
     MoviewArrayAdapter moviewAdapter;
     ListView lvItems;
+
+    private static AsyncHttpClient client = new AsyncHttpClient();;
+
+    private final String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +39,10 @@ public class MovieActivity extends AppCompatActivity {
         moviewAdapter = new MoviewArrayAdapter(this, movies);
         lvItems.setAdapter(moviewAdapter);
 
-        String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+        callAPI();
+    }
 
-        AsyncHttpClient client = new AsyncHttpClient();
+    private void callAPI(){
 
         client.get(url, new JsonHttpResponseHandler() {
             @Override
@@ -60,6 +66,5 @@ public class MovieActivity extends AppCompatActivity {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
-
     }
 }
