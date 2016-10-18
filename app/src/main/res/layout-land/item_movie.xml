@@ -18,6 +18,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/tvTitleLand"
+        android:paddingLeft="10dp"
+        android:textSize="20sp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/tvImageViewLand"
         android:layout_toEndOf="@+id/tvImageViewLand" />
@@ -26,7 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
+        android:paddingLeft="10dp"
         android:id="@+id/tvOverviewLand"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:layout_below="@+id/tvTitleLand"
         android:layout_toRightOf="@+id/tvImageViewLand"
         android:layout_toEndOf="@+id/tvImageViewLand" />
