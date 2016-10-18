@@ -24,48 +24,59 @@ public class MoviewArrayAdapter extends ArrayAdapter<Movie> {
         super(context, android.R.layout.simple_list_item_1, movies);
     }
 
+    // View lookup cache
+
+    private static class ViewHolder {
+
+        ImageView image;
+        TextView title;
+        TextView overview;
+
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // get the data for the positon
         Movie movie = getItem(position);
 
+        int orientation = getContext().getResources().getConfiguration().orientation;
+
+        ViewHolder viewHolder;
         // check the existing view being reused
         if(convertView == null) {
+            viewHolder = new ViewHolder();
+
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_movie, parent, false);
+
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                viewHolder.image = (ImageView) convertView.findViewById(R.id.ivMoviewImage);
+                viewHolder.title = (TextView) convertView.findViewById(R.id.tvTitle);
+                viewHolder.overview = (TextView) convertView.findViewById(R.id.tvOverview);
+            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                viewHolder.image = (ImageView) convertView.findViewById(R.id.tvImageViewLand);
+                viewHolder.title = (TextView) convertView.findViewById(R.id.tvTitleLand);
+                viewHolder.overview = (TextView) convertView.findViewById(R.id.tvOverviewLand);
+            }
+
+
+            // Cache the viewHolder object inside the fresh view
+            convertView.setTag(viewHolder);
+        } else {
+            // View is being recycled, retrieve the viewHolder object from tag
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        int orientation = getContext().getResources().getConfiguration().orientation;
+        viewHolder.overview.setText(movie.getOverview());
+        viewHolder.title.setText(movie.getOriginalTitle());
+        viewHolder.image.setImageResource(0);
+
+
+
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-            // find the image view
-            ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivMoviewImage);
-            // clear out image from convertView
-            ivImage.setImageResource(0);
-
-            TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-            TextView tvOverview = (TextView) convertView.findViewById((R.id.tvOverview));
-
-            //populate data
-            tvTitle.setText(movie.getOriginalTitle());
-            tvOverview.setText(movie.getOverview());
-
-            Picasso.with(getContext()).load(movie.getPosterPath()).placeholder(R.drawable.placeholder).fit().centerInside().into(ivImage);
-
+            Picasso.with(getContext()).load(movie.getPosterPath()).placeholder(R.drawable.placeholder).fit().centerInside().into(viewHolder.image);
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // find the image view
-            ImageView ivImage = (ImageView) convertView.findViewById(R.id.tvImageViewLand);
-            // clear out image from convertView
-            ivImage.setImageResource(0);
-
-            TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitleLand);
-            TextView tvOverview = (TextView) convertView.findViewById((R.id.tvOverviewLand));
-
-            //populate data
-            tvTitle.setText(movie.getOriginalTitle());
-            tvOverview.setText(movie.getOverview());
-
-            Picasso.with(getContext()).load(movie.getBackdropPath()).into(ivImage);
+            Picasso.with(getContext()).load(movie.getBackdropPath()).into(viewHolder.image);
         }
 
         // return the view
