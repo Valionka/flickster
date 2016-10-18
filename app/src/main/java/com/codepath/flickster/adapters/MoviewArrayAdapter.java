@@ -50,7 +50,8 @@ public class MoviewArrayAdapter extends ArrayAdapter<Movie> {
             tvTitle.setText(movie.getOriginalTitle());
             tvOverview.setText(movie.getOverview());
 
-            Picasso.with(getContext()).load(movie.getPosterPath()).into(ivImage);
+            Picasso.with(getContext()).load(movie.getPosterPath()).placeholder(R.drawable.placeholder).fit().centerInside().into(ivImage);
+
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // find the image view
             ImageView ivImage = (ImageView) convertView.findViewById(R.id.tvImageViewLand);
